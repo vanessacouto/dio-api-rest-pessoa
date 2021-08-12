@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service // indica ao Spring que será uma classe do tipo service
 public class PersonService {
     // injetamos o repository
@@ -34,5 +37,13 @@ public class PersonService {
                 .builder()
                 .message("Pessoa criada com o id: " + savedPerson.getId())
                 .build();
+    }
+
+    public List<PersonDTO> listAll() {
+        List<Person> allPeople = personRepository.findAll();
+        // converte de Person para PersonDTO
+        return allPeople.stream()
+                .map(personMapper::toDTO) // para cada um dos itens da lista allPeople, converte para DTO
+                .collect(Collectors.toList());
     }
 }
