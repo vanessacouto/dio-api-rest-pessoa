@@ -1,10 +1,9 @@
 package one.digitalinnovation.projetodiopersonapi.controller;
 
+import lombok.AllArgsConstructor;
 import one.digitalinnovation.projetodiopersonapi.dto.request.PersonDTO;
 import one.digitalinnovation.projetodiopersonapi.dto.response.MessageResponseDTO;
-import one.digitalinnovation.projetodiopersonapi.entity.Person;
 import one.digitalinnovation.projetodiopersonapi.exception.PersonNotFoundException;
-import one.digitalinnovation.projetodiopersonapi.repository.PersonRepository;
 import one.digitalinnovation.projetodiopersonapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +15,16 @@ import java.util.List;
 @RestController // controlador será acessado via API REST
 @RequestMapping("/api/v1/people") // caminho de acesso principal da API (para atendender o nível 1
 // do modelo de maturidade de Richardson)
+@AllArgsConstructor(onConstructor = @__(@Autowired)) // recurso do Lombok para que possamos remover o construtor anotado com @Autowired
 public class PersonController {
 
     private PersonService personService;
 
     // o Spring vai injetar todos os objetos do tipo service para nós atraves dessa annotation
-    @Autowired
+    /*@Autowired
     public PersonController(PersonService personService) {
         this.personService = personService;
-    }
+    }*/
 
     /*@GetMapping // operação HTTP do tipo GET
     public String getTeste() {

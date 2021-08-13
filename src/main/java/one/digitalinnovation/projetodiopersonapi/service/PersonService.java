@@ -1,5 +1,6 @@
 package one.digitalinnovation.projetodiopersonapi.service;
 
+import lombok.AllArgsConstructor;
 import one.digitalinnovation.projetodiopersonapi.dto.request.PersonDTO;
 import one.digitalinnovation.projetodiopersonapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.projetodiopersonapi.entity.Person;
@@ -8,13 +9,12 @@ import one.digitalinnovation.projetodiopersonapi.mapper.PersonMapper;
 import one.digitalinnovation.projetodiopersonapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service // indica ao Spring que será uma classe do tipo service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonService {
     // injetamos o repository
     private PersonRepository personRepository;
@@ -22,10 +22,10 @@ public class PersonService {
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
     // o Spring vai injetar todos os objetos do tipo repository para nós atraves dessa annotation
-    @Autowired
+    /*@Autowired
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
-    }
+    }*/
 
     public MessageResponseDTO createPerson(PersonDTO personDTO) {
         // não podemos salvar o DTO, só uma entidade do banco de dodos
