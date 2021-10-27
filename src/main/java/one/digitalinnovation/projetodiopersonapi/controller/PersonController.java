@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Esse {@link RestController} representa nossa <b>Facade</b>, pois abstrai toda
+ * a complexidade de integrações (Banco de Dados H2) em uma
+ * interface simples e coesa (API REST).
+ *
+ * @author vanessa
+ */
 @RestController // controlador será acessado via API REST
 @RequestMapping("/api/v1/people") // caminho de acesso principal da API (para atendender o nível 1
 // do modelo de maturidade de Richardson)
@@ -24,11 +31,6 @@ public class PersonController {
     /*@Autowired
     public PersonController(PersonService personService) {
         this.personService = personService;
-    }*/
-
-    /*@GetMapping // operação HTTP do tipo GET
-    public String getTeste() {
-        return "API TESTE!";
     }*/
 
     // @RequestBody: informa que virá uma requisição do tipo Person
@@ -59,5 +61,4 @@ public class PersonController {
     public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid PersonDTO personDTO) throws PersonNotFoundException {
         return personService.updateById(id, personDTO);
     }
-
 }
