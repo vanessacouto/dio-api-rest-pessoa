@@ -1,9 +1,9 @@
-<h1>Santander Bootcamp | Fullstack Developer</h1>
+<h1>GFT Java & AWS Developer</h1>
 <h2>Digital Innovation One: Desenvolvendo um sistema de gerenciamento de pessoas em API REST com Spring Boot</h2>
 
 Desenvolvido um pequeno sistema para o gerenciamento de pessoas de uma empresa através de uma API REST, criada com o Spring Boot.
 
-Durante a sessão, serão desenvolvidos e abordados os seguintes tópicos:
+Desenvolvidos e abordados os seguintes tópicos:
 
 * Setup inicial de projeto com o Spring Boot Initialzr
 * Criação de modelo de dados para o mapeamento de entidades em bancos de dados
