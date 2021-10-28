@@ -33,4 +33,7 @@ public class Person {
     // com esse mapeamento, uma tabela intermediária será criada automaticamente (PERSON_PHONES)
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Phone> phones;
+
+    @ManyToOne
+    private Endereco endereco;
 }

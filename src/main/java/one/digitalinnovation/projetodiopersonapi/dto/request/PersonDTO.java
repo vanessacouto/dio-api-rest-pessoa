@@ -35,4 +35,7 @@ public class PersonDTO {
     @Valid //vai fazer a validação das annotations que estão na PhoneDTO
     @NotEmpty
     private List<PhoneDTO> phones;
+
+    @Valid
+    private EnderecoDTO endereco;
 }

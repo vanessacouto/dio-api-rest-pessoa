@@ -3,10 +3,13 @@ package one.digitalinnovation.projetodiopersonapi.service;
 import lombok.AllArgsConstructor;
 import one.digitalinnovation.projetodiopersonapi.dto.request.PersonDTO;
 import one.digitalinnovation.projetodiopersonapi.dto.response.MessageResponseDTO;
+import one.digitalinnovation.projetodiopersonapi.entity.Endereco;
 import one.digitalinnovation.projetodiopersonapi.entity.Person;
 import one.digitalinnovation.projetodiopersonapi.exception.PersonNotFoundException;
 import one.digitalinnovation.projetodiopersonapi.mapper.PersonMapper;
+import one.digitalinnovation.projetodiopersonapi.repository.EnderecoRepository;
 import one.digitalinnovation.projetodiopersonapi.repository.PersonRepository;
+import one.digitalinnovation.projetodiopersonapi.repository.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 public class PersonService {
     // injetamos o repository
     private PersonRepository personRepository;
+    private EnderecoRepository enderecoRepository;
+    private ViaCepService viaCepService;
 
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
@@ -33,9 +38,26 @@ public class PersonService {
         // com o "map struct" conseguimos fazer essa conversão com uma unica linha
         Person personToSave = personMapper.toModel(personDTO);
 
+        Endereco endereco = verificarCep(personToSave);
+        personToSave.setEndereco(endereco);
+
         Person savedPerson = personRepository.save(personToSave);
 
         return createMessageResponse(savedPerson.getId(), "Pessoa criada com o id: ");
+    }
+
+    private Endereco verificarCep(Person person) {
+        // Verificar se o Endereco do Cliente já existe (pelo CEP).
+        String cep = person.getEndereco().getCep(); // o id do Endereco é o CEP
+        // orElseGet(): caso o CEP não exista vai executar algo para viabilizar que o endereço exista
+        Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
+            // Caso não exista, integrar com o ViaCEP e persistir o retorno.
+            Endereco novoEndereco = viaCepService.consultarCep(cep);
+            enderecoRepository.save(novoEndereco);
+            return novoEndereco;
+        });
+
+        return endereco;
     }
 
     public List<PersonDTO> listAll() {
@@ -48,6 +70,7 @@ public class PersonService {
 
     public PersonDTO findById(Long id) throws PersonNotFoundException {
         Person person = verifyIfExists(id);
+
 
         return personMapper.toDTO(person);
     }
@@ -74,7 +97,7 @@ public class PersonService {
                 .build();
     }
 
-    // tranformamos em metodo a verificação para reutilizar o códido
+    // tranformamos em metodo a verificação para reutilizar o código
     // quando for necessario verificar a existencia do ID (usado para atualizar, deletar e buscar ID especifico)
     private Person verifyIfExists(Long id) throws PersonNotFoundException {
         return personRepository.findById(id)
